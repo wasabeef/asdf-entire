@@ -7,7 +7,7 @@ TOOL_NAME="entire"
 TOOL_TEST="entire --version"
 
 fail() {
-	echo -e "asdf-$TOOL_NAME: $*"
+	echo -e "\033[31masdf-$TOOL_NAME: $*\033[39m" >&2
 	exit 1
 }
 
@@ -15,14 +15,12 @@ msg() {
 	echo -e "\033[32m$1\033[39m" >&2
 }
 
-err() {
-	echo -e "\033[31m$1\033[39m" >&2
-}
-
 curl_opts=(-fsSL)
 
-if [ -n "${GITHUB_API_TOKEN:-}" ]; then
-	curl_opts=("${curl_opts[@]}" -H "Authorization: token $GITHUB_API_TOKEN")
+# Support both GITHUB_API_TOKEN and GITHUB_TOKEN (GitHub Actions standard)
+github_token="${GITHUB_API_TOKEN:-${GITHUB_TOKEN:-}}"
+if [ -n "$github_token" ]; then
+	curl_opts=("${curl_opts[@]}" -H "Authorization: token $github_token")
 fi
 
 sort_versions() {
@@ -139,18 +137,17 @@ install_version() {
 		fail "asdf-$TOOL_NAME supports release installs only"
 	fi
 
-	(
-		mkdir -p "$install_path"
-		cp "$ASDF_DOWNLOAD_PATH/$TOOL_NAME" "$install_path/$TOOL_NAME"
-		chmod +x "$install_path/$TOOL_NAME"
+	mkdir -p "$install_path"
 
-		local tool_cmd
-		tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
-		test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
+	trap 'rm -rf "$install_path"' ERR
 
-		msg "$TOOL_NAME $version installation was successful!"
-	) || (
-		rm -rf "$install_path"
-		fail "An error occurred while installing $TOOL_NAME $version."
-	)
+	cp "$ASDF_DOWNLOAD_PATH/$TOOL_NAME" "$install_path/$TOOL_NAME"
+	chmod +x "$install_path/$TOOL_NAME"
+
+	local tool_cmd
+	tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
+	test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
+
+	trap - ERR
+	msg "$TOOL_NAME $version installation was successful!"
 }

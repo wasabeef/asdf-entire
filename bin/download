@@ -8,6 +8,11 @@ plugin_dir=$(dirname "$(dirname "$current_script_path")")
 # shellcheck source=../lib/utils.bash
 source "${plugin_dir}/lib/utils.bash"
 
+cleanup() {
+	rm -rf "$ASDF_DOWNLOAD_PATH"
+}
+trap cleanup SIGINT SIGTERM ERR
+
 mkdir -p "$ASDF_DOWNLOAD_PATH"
 
 platform="$(get_platform)"
@@ -21,3 +26,5 @@ verify_checksum "$release_file" "$ASDF_INSTALL_VERSION"
 tar -xzf "$release_file" -C "$ASDF_DOWNLOAD_PATH" || fail "Could not extract $release_file"
 
 rm -f "$release_file"
+
+trap - SIGINT SIGTERM ERR

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "Git Repository: https://github.com/entireio/cli"
+echo "asdf Plugin:    https://github.com/wasabeef/asdf-entire"

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+echo "curl - for downloading releases from GitHub"
+echo "tar - for extracting archives"
+echo "sha256sum or shasum - for checksum verification"

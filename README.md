@@ -1,5 +1,9 @@
 # asdf-entire
 
+[![Build](https://github.com/wasabeef/asdf-entire/actions/workflows/build.yml/badge.svg)](https://github.com/wasabeef/asdf-entire/actions/workflows/build.yml)
+[![Lint](https://github.com/wasabeef/asdf-entire/actions/workflows/lint.yml/badge.svg)](https://github.com/wasabeef/asdf-entire/actions/workflows/lint.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/wasabeef/asdf-entire/blob/main/LICENSE)
+
 [Entire CLI](https://github.com/entireio/cli) plugin for the [asdf version manager](https://asdf-vm.com). Also compatible with [mise](https://mise.jdx.dev).
 
 ## Dependencies
@@ -63,11 +67,6 @@ mise use entire@latest
 ```shell
 entire --version
 ```
-
-## Configuration
-
-- `ASDF_ENTIRE_OVERWRITE_ARCH` - Override the architecture detection (e.g., `amd64`, `arm64`)
-- `GITHUB_API_TOKEN` - GitHub API token to avoid rate limiting
 
 ## License
 

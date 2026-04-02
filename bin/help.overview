@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "Entire CLI - Capture AI agent sessions and link them to git commits."
+echo "https://github.com/entireio/cli"
