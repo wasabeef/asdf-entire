@@ -8,6 +8,15 @@ plugin_dir=$(dirname "$(dirname "$current_script_path")")
 # shellcheck source=../lib/utils.bash
 source "${plugin_dir}/lib/utils.bash"
 
-curl "${curl_opts[@]}" "https://api.github.com/repos/entireio/cli/releases/latest" |
-	grep -oE '"tag_name":\s*"[^"]+"' |
-	sed 's/.*"v\?\([^"]*\)"/\1/'
+version=$(
+	curl "${curl_opts[@]}" "https://api.github.com/repos/entireio/cli/releases/latest" |
+		grep -oE '"tag_name":\s*"v?[^"]+"' |
+		head -1 |
+		sed -E 's/.*"v?([0-9][^"]*)".*/\1/'
+)
+
+if [ -z "$version" ]; then
+	fail "Could not determine latest stable version"
+fi
+
+printf "%s" "$version"
