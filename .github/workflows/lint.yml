@@ -22,7 +22,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run shfmt
-        uses: mvdan/sh/cmd/shfmt@latest
-        with:
-          args: -d -i 0 -ci bin/* lib/*
+      - uses: mfinelli/setup-shfmt@v4
+      - run: shfmt -d .
