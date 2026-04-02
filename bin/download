@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+current_script_path=${BASH_SOURCE[0]}
+plugin_dir=$(dirname "$(dirname "$current_script_path")")
+
+# shellcheck source=../lib/utils.bash
+source "${plugin_dir}/lib/utils.bash"
+
+mkdir -p "$ASDF_DOWNLOAD_PATH"
+
+platform="$(get_platform)"
+arch="$(get_arch)"
+release_file="$ASDF_DOWNLOAD_PATH/entire_${platform}_${arch}.tar.gz"
+
+download_release "$ASDF_INSTALL_VERSION" "$release_file"
+
+verify_checksum "$release_file" "$ASDF_INSTALL_VERSION"
+
+tar -xzf "$release_file" -C "$ASDF_DOWNLOAD_PATH" || fail "Could not extract $release_file"
+
+rm -f "$release_file"
