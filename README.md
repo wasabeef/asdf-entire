@@ -6,12 +6,6 @@
 
 [Entire CLI](https://github.com/entireio/cli) plugin for the [asdf version manager](https://asdf-vm.com). Also compatible with [mise](https://mise.jdx.dev).
 
-## Dependencies
-
-- `curl` - for downloading releases
-- `tar` - for extracting archives
-- `sha256sum` or `shasum` - for checksum verification
-
 ## Install
 
 ### asdf
